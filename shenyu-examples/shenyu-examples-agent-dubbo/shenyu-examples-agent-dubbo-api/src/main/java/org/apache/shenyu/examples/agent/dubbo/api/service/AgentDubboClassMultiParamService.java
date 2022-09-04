@@ -17,10 +17,8 @@
 
 package org.apache.shenyu.examples.agent.dubbo.api.service;
 
-
 import org.apache.shenyu.examples.agent.dubbo.api.entity.ComplexBeanTest;
 import org.apache.shenyu.examples.agent.dubbo.api.entity.DubboTest;
-
 import java.util.List;
 
 /**

@@ -17,14 +17,12 @@
 
 package org.apache.shenyu.examples.agent.alibaba.dubbo.service.impl;
 
-
 import org.apache.shenyu.client.dubbo.common.annotation.ShenyuDubboClient;
 import org.apache.shenyu.examples.agent.dubbo.api.entity.ComplexBeanTest;
 import org.apache.shenyu.examples.agent.dubbo.api.entity.DubboTest;
 import org.apache.shenyu.examples.agent.dubbo.api.service.AgentDubboClassMultiParamService;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
-
 import java.util.Arrays;
 import java.util.List;
 import java.util.function.Function;

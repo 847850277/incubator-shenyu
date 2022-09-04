@@ -34,27 +34,27 @@ import java.util.Random;
 public class DubboTestServiceImpl implements DubboTestService {
 
     @Override
-    //@ShenyuDubboClient("/findById")
+    @ShenyuDubboClient("/findById")
     @Log
     public DubboTest findById(final String id) {
         return new DubboTest(id, "hello world shenyu Alibaba Dubbo, findById");
     }
 
     @Override
-    //@ShenyuDubboClient("/findAll")
+    @ShenyuDubboClient("/findAll")
     public DubboTest findAll() {
         return new DubboTest(String.valueOf(new Random().nextInt()), "hello world shenyu Alibaba Dubbo , findAll");
     }
 
     @Override
-    //@ShenyuDubboClient("/insert")
+    @ShenyuDubboClient("/insert")
     public DubboTest insert(final DubboTest dubboTest) {
         dubboTest.setName("hello world shenyu Alibaba Dubbo: " + dubboTest.getName());
         return dubboTest;
     }
 
     @Override
-    //@ShenyuDubboClient("/findList")
+    @ShenyuDubboClient("/findList")
     public ListResp findList() {
         return new ListResp(1, Collections.singletonList(new DubboTest("1", "test")));
     }

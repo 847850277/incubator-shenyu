@@ -19,39 +19,18 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
         <groupId>org.apache.shenyu</groupId>
-        <artifactId>shenyu</artifactId>
+        <artifactId>shenyu-client</artifactId>
         <version>2.5.1-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
-    <artifactId>shenyu-client</artifactId>
+    <artifactId>shenyu-client-dubbo-all</artifactId>
     <packaging>pom</packaging>
     
     <modules>
-        <module>shenyu-client-core</module>
-        <module>shenyu-client-http</module>
-        <module>shenyu-client-dubbo-all</module>
-        <module>shenyu-client-sofa</module>
-        <module>shenyu-client-tars</module>
-        <module>shenyu-client-grpc</module>
-        <module>shenyu-client-motan</module>
-        <module>shenyu-client-websocket</module>
+        <module>shenyu-client-dubbo-common</module>
+        <module>shenyu-client-alibaba-dubbo</module>
+        <module>shenyu-client-apache-dubbo</module>
+        <module>shenyu-client-dubbo-agent</module>
+        <module>shenyu-client-dubbo-config</module>
     </modules>
-
-    <dependencies>
-        <dependency>
-            <groupId>com.squareup.okhttp3</groupId>
-            <artifactId>okhttp</artifactId>
-            <version>${okhttp.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>com.google.code.gson</groupId>
-            <artifactId>gson</artifactId>
-            <version>${gson.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-test</artifactId>
-            <scope>test</scope>
-        </dependency>
-    </dependencies>
 </project>

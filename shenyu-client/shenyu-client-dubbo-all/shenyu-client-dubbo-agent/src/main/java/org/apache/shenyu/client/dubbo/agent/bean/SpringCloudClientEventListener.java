@@ -179,6 +179,7 @@ public class SpringCloudClientEventListener implements ApplicationListener<Conte
         config.setRegisterType(registerType);
         props.put("username", username);
         props.put("password", password);
+        props.put("accessToken", password);
         config.setProps(props);
         ShenyuClientRegisterRepository registerRepository = new HttpClientRegisterRepository();
         registerRepository.init(config);
