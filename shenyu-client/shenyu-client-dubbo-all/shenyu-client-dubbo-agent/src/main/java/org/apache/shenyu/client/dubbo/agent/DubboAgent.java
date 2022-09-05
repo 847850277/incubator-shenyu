@@ -23,8 +23,8 @@ import net.bytebuddy.description.type.TypeDescription;
 import net.bytebuddy.dynamic.DynamicType;
 import net.bytebuddy.matcher.ElementMatchers;
 import net.bytebuddy.utility.JavaModule;
-import org.apache.shenyu.client.dubbo.agent.transfer.MethodInterceptor1;
-import org.apache.shenyu.client.dubbo.agent.transfer.MethodTransferInterceptor;
+import org.apache.shenyu.client.dubbo.agent.transfer.PackageScanInterceptor;
+import org.apache.shenyu.client.dubbo.agent.transfer.AbstractApplicationContextInterceptor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -54,7 +54,7 @@ public class DubboAgent {
                 try {
                     return builder
                             .method(ElementMatchers.named("addApplicationListener"))
-                            .intercept(Advice.to(MethodTransferInterceptor.class));
+                            .intercept(Advice.to(AbstractApplicationContextInterceptor.class));
                 } catch (Exception e) {
                     LOG.error(e.getMessage());
                 }
@@ -70,7 +70,7 @@ public class DubboAgent {
                 try {
                     return builder
                             .method(ElementMatchers.named("parse"))
-                            .intercept(Advice.to(MethodInterceptor1.class));
+                            .intercept(Advice.to(PackageScanInterceptor.class));
                 } catch (Exception e) {
                     LOG.error(e.getMessage());
                 }

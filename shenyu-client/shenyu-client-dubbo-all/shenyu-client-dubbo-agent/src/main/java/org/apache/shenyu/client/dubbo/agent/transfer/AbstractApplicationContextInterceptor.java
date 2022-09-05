@@ -24,7 +24,7 @@ import org.apache.shenyu.client.dubbo.agent.bean.SpringCloudClientEventListener;
 /**
  * MethodInterceptor.
  */
-public class MethodTransferInterceptor {
+public class AbstractApplicationContextInterceptor {
 
     /**
      * MethodInterceptor.
@@ -32,18 +32,9 @@ public class MethodTransferInterceptor {
      * @param args args.
      */
     @Advice.OnMethodEnter
-    public static void enter(@Advice.AllArguments(readOnly = false, typing = Assigner.Typing.DYNAMIC)Object[] args) {
-//        SpringCloudClientEventListener springCloudClientEventListener = new SpringCloudClientEventListener();
-//        if (args.length == 0) {
-//            args = new Object[]{springCloudClientEventListener};
-//        } else {
-//            Object[] newArgs = new Object[args.length + 1];
-//            newArgs[args.length] = springCloudClientEventListener;
-//            args = newArgs;
-//        }
+    public static void enter(@Advice.AllArguments(readOnly = false, typing = Assigner.Typing.DYNAMIC) Object[] args) {
         SpringCloudClientEventListener springCloudClientEventListener = new SpringCloudClientEventListener();
         Object[] newArgs = new Object[args.length + 1];
-        //newArgs[0] = springCloudClientEventListener;
         System.arraycopy(args, 0, newArgs, 0, args.length);
         newArgs[args.length] = springCloudClientEventListener;
         args = newArgs;

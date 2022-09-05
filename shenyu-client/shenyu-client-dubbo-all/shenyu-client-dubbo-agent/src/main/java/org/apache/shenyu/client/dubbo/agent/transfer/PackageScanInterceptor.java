@@ -26,7 +26,7 @@ import java.util.Map;
 /**
  * MethodInterceptor.
  */
-public class MethodInterceptor1 {
+public class PackageScanInterceptor {
 
     /**
      * MethodInterceptor.
@@ -35,25 +35,24 @@ public class MethodInterceptor1 {
      */
     @Advice.OnMethodEnter
     public static void enter(@Advice.AllArguments(readOnly = false, typing = Assigner.Typing.DYNAMIC) Object[] args) throws Throwable {
-
         for (Object arg : args) {
-            if(arg instanceof LinkedHashMap){
-                Map maps = (Map) arg;
+            if (arg instanceof LinkedHashMap) {
+                Map<String, Object> maps = (Map<String, Object>) arg;
                 String[] baseScan = (String[]) maps.get("basePackages");
-//                if(baseScan.length > 0){
-//                    //String[] newBaseScan = new String[baseScan.length + 2];
-//                    String[] newBaseScan = new String[baseScan.length + 1];
-//                    System.arraycopy(baseScan, 0, newBaseScan, 0, baseScan.length);
-//                    //newBaseScan[baseScan.length] = "org.apache.shenyu.client.dubbo.agent.bean";
-//                    newBaseScan[baseScan.length + 1] = "org.apache.shenyu";
-//                    maps.put("basePackages",newBaseScan);
-//                }
-
-                String[] newBaseScan = new String[baseScan.length + 1];
-                System.arraycopy(baseScan, 0, newBaseScan, 0, baseScan.length);
-                //newBaseScan[baseScan.length] = "org.apache.shenyu.client.dubbo.agent.bean";
-                newBaseScan[baseScan.length] = "org.apache.shenyu";
-                maps.put("basePackages",newBaseScan);
+                if (baseScan.length > 0) {
+                    String[] newBaseScan = new String[baseScan.length + 1];
+                    System.arraycopy(baseScan, 0, newBaseScan, 0, baseScan.length);
+                    newBaseScan[baseScan.length] = "org.apache.shenyu.client.dubbo.agent.bean";
+                    maps.put("basePackages", newBaseScan);
+                } else {
+                    final int length = args.length;
+                    if (args[length - 1] instanceof String) {
+                        String declaringClass = String.valueOf(args[length - 1]);
+                        String originalPackageScan = declaringClass.substring(0, declaringClass.lastIndexOf("."));
+                        String[] packageScans = new String[]{originalPackageScan, "org.apache.shenyu.client.dubbo.agent.bean"};
+                        maps.put("basePackages", packageScans);
+                    }
+                }
             }
         }
     }
