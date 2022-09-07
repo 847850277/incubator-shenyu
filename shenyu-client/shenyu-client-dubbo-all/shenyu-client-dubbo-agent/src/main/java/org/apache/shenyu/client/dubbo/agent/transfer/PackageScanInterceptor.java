@@ -42,14 +42,14 @@ public class PackageScanInterceptor {
                 if (baseScan.length > 0) {
                     String[] newBaseScan = new String[baseScan.length + 1];
                     System.arraycopy(baseScan, 0, newBaseScan, 0, baseScan.length);
-                    newBaseScan[baseScan.length] = "org.apache.shenyu.client.dubbo.agent.bean";
+                    newBaseScan[baseScan.length] = "org.apache.shenyu.client.alibaba.dubbo";
                     maps.put("basePackages", newBaseScan);
                 } else {
                     final int length = args.length;
                     if (args[length - 1] instanceof String) {
                         String declaringClass = String.valueOf(args[length - 1]);
                         String originalPackageScan = declaringClass.substring(0, declaringClass.lastIndexOf("."));
-                        String[] packageScans = new String[]{originalPackageScan, "org.apache.shenyu.client.dubbo.agent.bean"};
+                        String[] packageScans = new String[]{originalPackageScan, "org.apache.shenyu.client.alibaba.dubbo"};
                         maps.put("basePackages", packageScans);
                     }
                 }

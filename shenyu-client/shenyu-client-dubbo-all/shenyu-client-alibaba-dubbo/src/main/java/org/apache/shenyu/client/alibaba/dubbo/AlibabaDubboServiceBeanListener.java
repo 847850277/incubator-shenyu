@@ -23,6 +23,7 @@ import com.alibaba.dubbo.config.spring.ServiceBean;
 import org.apache.shenyu.client.core.constant.ShenyuClientConstants;
 import org.apache.shenyu.client.core.disruptor.ShenyuClientRegisterEventPublisher;
 import org.apache.shenyu.client.core.exception.ShenyuClientIllegalArgumentException;
+import org.apache.shenyu.client.core.register.ShenyuClientRegisterRepositoryFactory;
 import org.apache.shenyu.client.dubbo.common.annotation.ShenyuDubboClient;
 import org.apache.shenyu.client.dubbo.common.dto.DubboRpcExt;
 import org.apache.shenyu.common.enums.RpcTypeEnum;
@@ -30,6 +31,7 @@ import org.apache.shenyu.common.utils.GsonUtils;
 import org.apache.shenyu.common.utils.IpUtils;
 import org.apache.shenyu.register.client.api.ShenyuClientRegisterRepository;
 import org.apache.shenyu.register.common.config.PropertiesConfig;
+import org.apache.shenyu.register.common.config.ShenyuRegisterCenterConfig;
 import org.apache.shenyu.register.common.dto.MetaDataRegisterDTO;
 import org.apache.shenyu.register.common.dto.URIRegisterDTO;
 import org.springframework.aop.support.AopUtils;
@@ -82,7 +84,26 @@ public class AlibabaDubboServiceBeanListener implements ApplicationListener<Cont
         this.port = props.getProperty(ShenyuClientConstants.PORT);
         publisher.start(shenyuClientRegisterRepository);
     }
-    
+
+    public AlibabaDubboServiceBeanListener(final ShenyuRegisterCenterConfig registerCenterConfig,
+                                           final PropertiesConfig clientConfig,
+                                           final ShenyuClientRegisterRepository shenyuClientRegisterRepository) {
+
+        Properties props = clientConfig.getProps();
+        String contextPath = props.getProperty(ShenyuClientConstants.CONTEXT_PATH);
+        if (StringUtils.isBlank(contextPath)) {
+            throw new ShenyuClientIllegalArgumentException("alibaba dubbo client must config the contextPath");
+        }
+        this.contextPath = contextPath;
+        this.appName = props.getProperty(ShenyuClientConstants.APP_NAME);
+        this.host = props.getProperty(ShenyuClientConstants.HOST);
+        this.port = props.getProperty(ShenyuClientConstants.PORT);
+        shenyuClientRegisterRepository.init(registerCenterConfig);
+        publisher.start(shenyuClientRegisterRepository);
+        ShenyuClientRegisterRepositoryFactory.newInstance(registerCenterConfig);
+
+    }
+
     @Override
     public void onApplicationEvent(@NonNull final ContextRefreshedEvent contextRefreshedEvent) {
         if (!registered.compareAndSet(false, true)) {
@@ -166,7 +187,7 @@ public class AlibabaDubboServiceBeanListener implements ApplicationListener<Cont
                 .enabled(shenyuDubboClient.enabled())
                 .build();
     }
-    
+
     private URIRegisterDTO buildURIRegisterDTO(@NonNull final ServiceBean serviceBean) {
         return URIRegisterDTO.builder()
                 .contextPath(this.contextPath)
@@ -190,15 +211,15 @@ public class AlibabaDubboServiceBeanListener implements ApplicationListener<Cont
                 .build();
         return GsonUtils.getInstance().toJson(builder);
     }
-    
+
     private String buildAppName(@NonNull final ServiceBean serviceBean) {
         return StringUtils.isBlank(this.appName) ? serviceBean.getApplication().getName() : this.appName;
     }
-    
+
     private String buildHost() {
         return IpUtils.isCompleteHost(this.host) ? this.host : IpUtils.getHost(this.host);
     }
-    
+
     private int buildPort(@NonNull final ServiceBean serviceBean) {
         return StringUtils.isBlank(this.port) ? serviceBean.getProtocol().getPort() : Integer.parseInt(this.port);
     }

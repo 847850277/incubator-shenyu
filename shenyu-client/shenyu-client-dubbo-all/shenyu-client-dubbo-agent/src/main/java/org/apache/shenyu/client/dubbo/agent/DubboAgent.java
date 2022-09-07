@@ -53,7 +53,7 @@ public class DubboAgent {
                                                     final ClassLoader classLoader, final JavaModule module, final ProtectionDomain protectionDomain) {
                 try {
                     return builder
-                            .method(ElementMatchers.named("addApplicationListener"))
+                            .method(ElementMatchers.named("getApplicationListeners"))
                             .intercept(Advice.to(AbstractApplicationContextInterceptor.class));
                 } catch (Exception e) {
                     LOG.error(e.getMessage());
@@ -81,8 +81,8 @@ public class DubboAgent {
                 .with(DebugListener.getListener())
                 .type(ElementMatchers.named("org.springframework.context.support.AbstractApplicationContext"))
                 .transform(transformer)
-                .type(ElementMatchers.named("org.springframework.context.annotation.ComponentScanAnnotationParser"))
-                .transform(transformer1)
+//                .type(ElementMatchers.named("org.springframework.context.annotation.ComponentScanAnnotationParser"))
+//                .transform(transformer1)
                 .installOn(instrumentation);
 
     }

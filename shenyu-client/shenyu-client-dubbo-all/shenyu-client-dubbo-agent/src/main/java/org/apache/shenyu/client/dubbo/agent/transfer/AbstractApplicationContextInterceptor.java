@@ -19,25 +19,56 @@ package org.apache.shenyu.client.dubbo.agent.transfer;
 
 import net.bytebuddy.asm.Advice;
 import net.bytebuddy.implementation.bytecode.assign.Assigner;
-import org.apache.shenyu.client.dubbo.agent.bean.SpringCloudClientEventListener;
+import org.apache.shenyu.client.alibaba.dubbo.AlibabaDubboServiceBeanListener;
+import org.apache.shenyu.client.core.register.ShenyuClientRegisterRepositoryFactory;
+import org.apache.shenyu.client.dubbo.agent.DubboAgent;
+import org.apache.shenyu.register.client.api.ShenyuClientRegisterRepository;
+import org.apache.shenyu.register.client.http.HttpClientRegisterRepository;
+import org.apache.shenyu.register.common.config.PropertiesConfig;
+import org.apache.shenyu.register.common.config.ShenyuRegisterCenterConfig;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.boot.env.EnvironmentPostProcessorApplicationListener;
+
+import java.util.Collection;
+import java.util.Properties;
 
 /**
  * MethodInterceptor.
  */
 public class AbstractApplicationContextInterceptor {
 
+
     /**
      * MethodInterceptor.
      *
-     * @param args args.
+     * @param listeners listeners.
      */
-    @Advice.OnMethodEnter
-    public static void enter(@Advice.AllArguments(readOnly = false, typing = Assigner.Typing.DYNAMIC) Object[] args) {
-        SpringCloudClientEventListener springCloudClientEventListener = new SpringCloudClientEventListener();
-        Object[] newArgs = new Object[args.length + 1];
-        System.arraycopy(args, 0, newArgs, 0, args.length);
-        newArgs[args.length] = springCloudClientEventListener;
-        args = newArgs;
+    @Advice.OnMethodExit
+    public static void enter(@Advice.Return(readOnly=false, typing= Assigner.Typing.DYNAMIC) Collection listeners) {
+//        System.out.println("argSize:" + args.length);
+//        if(args.length > 0){
+//            final Object arg = args[0];
+//            System.out.println("class:" + arg.getClass());
+//        }
+        System.out.println(listeners.size());
+        ShenyuRegisterCenterConfig registerCenterConfig = new ShenyuRegisterCenterConfig();
+        registerCenterConfig.setRegisterType("http");
+        registerCenterConfig.setServerLists("http://localhost:9095");
+        Properties props = new Properties();
+        props.setProperty("username","admin");
+        props.setProperty("password","123456");
+        registerCenterConfig.setProps(props);
+        PropertiesConfig clientConfig = new PropertiesConfig();
+        Properties clientProps = new Properties();
+        clientProps.setProperty("appName","dubbo");
+        clientProps.setProperty("contextPath","/dubbo");
+        clientConfig.setProps(clientProps);
+        ShenyuClientRegisterRepository shenyuClientRegisterRepository = new HttpClientRegisterRepository();
+        AlibabaDubboServiceBeanListener alibabaDubboServiceBeanListener = new AlibabaDubboServiceBeanListener(registerCenterConfig,clientConfig,shenyuClientRegisterRepository);
+        listeners.add(alibabaDubboServiceBeanListener);
+        System.out.println(listeners.size());
+
     }
 
 }

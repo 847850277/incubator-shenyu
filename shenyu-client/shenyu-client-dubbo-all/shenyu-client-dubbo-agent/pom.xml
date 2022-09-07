@@ -98,10 +98,15 @@
             <scope>compile</scope>
         </dependency>
 
-        <!-- https://mvnrepository.com/artifact/org.apache.shenyu/shenyu-client-dubbo-common -->
         <dependency>
             <groupId>org.apache.shenyu</groupId>
             <artifactId>shenyu-client-dubbo-config</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.shenyu</groupId>
+            <artifactId>shenyu-client-alibaba-dubbo</artifactId>
             <version>${project.version}</version>
         </dependency>
 
@@ -154,6 +159,7 @@
                             <include>commons-logging:commons-logging:jar:</include>
                             <include>org.apache.shenyu:shenyu-client-core:jar:</include>
                             <include>org.apache.shenyu:shenyu-client-dubbo-config:jar:</include>
+                            <include>org.apache.shenyu:shenyu-client-alibaba-dubbo:jar:</include>
                         </includes>
                     </artifactSet>
                 </configuration>
