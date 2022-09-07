@@ -23,8 +23,8 @@ import net.bytebuddy.description.type.TypeDescription;
 import net.bytebuddy.dynamic.DynamicType;
 import net.bytebuddy.matcher.ElementMatchers;
 import net.bytebuddy.utility.JavaModule;
-import org.apache.shenyu.client.dubbo.agent.transfer.PackageScanInterceptor;
-import org.apache.shenyu.client.dubbo.agent.transfer.AbstractApplicationContextInterceptor;
+import org.apache.shenyu.client.dubbo.agent.transfer.GetApplicationListenersExitInterceptor;
+import org.apache.shenyu.client.dubbo.agent.transfer.GetEnvironmentExitInterceptor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -47,14 +47,15 @@ public class DubboAgent {
     public static void premain(final String arg, final Instrumentation instrumentation) {
 
         AgentBuilder.Transformer transformer = new AgentBuilder.Transformer() {
-
             @Override
             public DynamicType.Builder<?> transform(final DynamicType.Builder<?> builder, final TypeDescription typeDescription,
                                                     final ClassLoader classLoader, final JavaModule module, final ProtectionDomain protectionDomain) {
                 try {
                     return builder
+                            .method(ElementMatchers.named("getEnvironment"))
+                            .intercept(Advice.to(GetEnvironmentExitInterceptor.class))
                             .method(ElementMatchers.named("getApplicationListeners"))
-                            .intercept(Advice.to(AbstractApplicationContextInterceptor.class));
+                            .intercept(Advice.to(GetApplicationListenersExitInterceptor.class));
                 } catch (Exception e) {
                     LOG.error(e.getMessage());
                 }
@@ -62,27 +63,10 @@ public class DubboAgent {
             }
         };
 
-        AgentBuilder.Transformer transformer1 = new AgentBuilder.Transformer() {
-
-            @Override
-            public DynamicType.Builder<?> transform(final DynamicType.Builder<?> builder, final TypeDescription typeDescription,
-                                                    final ClassLoader classLoader, final JavaModule module, final ProtectionDomain protectionDomain) {
-                try {
-                    return builder
-                            .method(ElementMatchers.named("parse"))
-                            .intercept(Advice.to(PackageScanInterceptor.class));
-                } catch (Exception e) {
-                    LOG.error(e.getMessage());
-                }
-                return builder;
-            }
-        };
         new AgentBuilder.Default()
                 .with(DebugListener.getListener())
                 .type(ElementMatchers.named("org.springframework.context.support.AbstractApplicationContext"))
                 .transform(transformer)
-//                .type(ElementMatchers.named("org.springframework.context.annotation.ComponentScanAnnotationParser"))
-//                .transform(transformer1)
                 .installOn(instrumentation);
 
     }
