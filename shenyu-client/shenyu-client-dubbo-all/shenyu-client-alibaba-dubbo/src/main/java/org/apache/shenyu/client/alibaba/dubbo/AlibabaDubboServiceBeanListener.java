@@ -101,7 +101,6 @@ public class AlibabaDubboServiceBeanListener implements ApplicationListener<Cont
         shenyuClientRegisterRepository.init(registerCenterConfig);
         publisher.start(shenyuClientRegisterRepository);
         ShenyuClientRegisterRepositoryFactory.newInstance(registerCenterConfig);
-
     }
 
     @Override

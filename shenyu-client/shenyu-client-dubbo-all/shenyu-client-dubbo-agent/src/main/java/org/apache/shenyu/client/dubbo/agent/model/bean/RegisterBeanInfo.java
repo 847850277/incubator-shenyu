@@ -17,6 +17,8 @@
 
 package org.apache.shenyu.client.dubbo.agent.model.bean;
 
+import java.util.Objects;
+
 /**
  * RegisterBeanInfo.
  */
@@ -180,5 +182,29 @@ public class RegisterBeanInfo {
      */
     public static void setContextPath(final String contextPath) {
         RegisterBeanInfo.contextPath = contextPath;
+    }
+
+    /**
+     * validateNull.
+     */
+    public static void validateNull() {
+        if (Objects.isNull(registerType)) {
+            throw new IllegalArgumentException("RegisterBeanInfo registerType is null");
+        }
+        if (Objects.isNull(serverLists)) {
+            throw new IllegalArgumentException("RegisterBeanInfo serverLists is null");
+        }
+        if (Objects.isNull(username)) {
+            throw new IllegalArgumentException("RegisterBeanInfo username is null");
+        }
+        if (Objects.isNull(password)) {
+            throw new IllegalArgumentException("RegisterBeanInfo password is null");
+        }
+        if (Objects.isNull(appName)) {
+            throw new IllegalArgumentException("RegisterBeanInfo appName is null");
+        }
+        if (Objects.isNull(contextPath)) {
+            throw new IllegalArgumentException("RegisterBeanInfo contextPath is null");
+        }
     }
 }
