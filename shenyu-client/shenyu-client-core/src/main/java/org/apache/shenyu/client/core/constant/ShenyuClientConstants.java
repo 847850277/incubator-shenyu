@@ -71,4 +71,54 @@ public final class ShenyuClientConstants {
      * the constant of SERVICE_NAME.
      */
     public static final String SERVICE_NAME = "SERVICE_NAME";
+
+    /**
+     * the constant of username.
+     */
+    public static final String USERNAME = "username";
+
+    /**
+     * the constant of password.
+     */
+    public static final String PASSWORD = "password";
+
+    /**
+     * the constant of appName.
+     */
+    public static final String APPNAME = "appName";
+
+    /**
+     * the constant of contextPath.
+     */
+    public static final String CONTEXTPATH = "contextPath";
+
+    /**
+     * the constant of shenyu.register.registerType.
+     */
+    public static final String SHENYU_REGISTER_REGISTERTYPE = "shenyu.register.registerType";
+
+    /**
+     * the constant of shenyu.register.serverLists.
+     */
+    public static final String SHENYU_REGISTER_SERVERLISTS = "shenyu.register.serverLists";
+
+    /**
+     * the constant of shenyu.register.props.username.
+     */
+    public static final String SHENYU_REGISTER_PROPS_USERNAME = "shenyu.register.props.username";
+
+    /**
+     * the constant of shenyu.register.props.password.
+     */
+    public static final String SHENYU_REGISTER_PROPS_PASSWORD = "shenyu.register.props.password";
+
+    /**
+     * the constant of shenyu.client.dubbo.props.appName.
+     */
+    public static final String SHENYU_CLIENT_DUBBO_PROPS_APPNAME = "shenyu.client.dubbo.props.appName";
+
+    /**
+     * the constant of shenyu.client.dubbo.props.contextPath.
+     */
+    public static final String SHENYU_CLIENT_DUBBO_PROPS_CONTEXTPATH = "shenyu.client.dubbo.props.contextPath";
 }

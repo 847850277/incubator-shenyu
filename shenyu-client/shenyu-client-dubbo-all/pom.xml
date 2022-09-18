@@ -29,8 +29,9 @@
     <modules>
         <module>shenyu-client-dubbo-common</module>
         <module>shenyu-client-alibaba-dubbo</module>
+        <module>shenyu-client-alibaba-dubbo-agent</module>
         <module>shenyu-client-apache-dubbo</module>
-        <module>shenyu-client-dubbo-agent</module>
+        <module>shenyu-client-apache-dubbo-agent</module>
         <module>shenyu-client-dubbo-config</module>
     </modules>
 </project>

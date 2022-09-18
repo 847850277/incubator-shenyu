@@ -29,6 +29,7 @@ import org.apache.shenyu.common.utils.GsonUtils;
 import org.apache.shenyu.common.utils.IpUtils;
 import org.apache.shenyu.register.client.api.ShenyuClientRegisterRepository;
 import org.apache.shenyu.register.common.config.PropertiesConfig;
+import org.apache.shenyu.register.common.config.ShenyuRegisterCenterConfig;
 import org.apache.shenyu.register.common.dto.MetaDataRegisterDTO;
 import org.apache.shenyu.register.common.dto.URIRegisterDTO;
 import org.springframework.aop.support.AopUtils;
@@ -58,6 +59,19 @@ public class AlibabaDubboServiceBeanListener extends AbstractContextRefreshedEve
     public AlibabaDubboServiceBeanListener(final PropertiesConfig clientConfig,
                                            final ShenyuClientRegisterRepository shenyuClientRegisterRepository) {
         super(clientConfig, shenyuClientRegisterRepository);
+    }
+
+    /**
+     * Instantiates a new context refreshed event listener.
+     *
+     * @param registerCenterConfig           registerCenterConfig.
+     * @param clientConfig                   clientConfig.
+     * @param shenyuClientRegisterRepository shenyuClientRegisterRepository.
+     */
+    public AlibabaDubboServiceBeanListener(final ShenyuRegisterCenterConfig registerCenterConfig,
+                                           final PropertiesConfig clientConfig,
+                                           final ShenyuClientRegisterRepository shenyuClientRegisterRepository) {
+        super(registerCenterConfig, clientConfig, shenyuClientRegisterRepository);
     }
 
     @Override

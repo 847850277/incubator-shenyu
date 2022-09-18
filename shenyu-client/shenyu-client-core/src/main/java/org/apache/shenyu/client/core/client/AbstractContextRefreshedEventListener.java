@@ -22,9 +22,11 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.shenyu.client.core.constant.ShenyuClientConstants;
 import org.apache.shenyu.client.core.disruptor.ShenyuClientRegisterEventPublisher;
 import org.apache.shenyu.client.core.exception.ShenyuClientIllegalArgumentException;
+import org.apache.shenyu.client.core.register.ShenyuClientRegisterRepositoryFactory;
 import org.apache.shenyu.common.utils.UriUtils;
 import org.apache.shenyu.register.client.api.ShenyuClientRegisterRepository;
 import org.apache.shenyu.register.common.config.PropertiesConfig;
+import org.apache.shenyu.register.common.config.ShenyuRegisterCenterConfig;
 import org.apache.shenyu.register.common.dto.MetaDataRegisterDTO;
 import org.apache.shenyu.register.common.dto.URIRegisterDTO;
 import org.slf4j.Logger;
@@ -63,15 +65,16 @@ public abstract class AbstractContextRefreshedEventListener<T, A extends Annotat
     private final ShenyuClientRegisterEventPublisher publisher = ShenyuClientRegisterEventPublisher.getInstance();
     
     private final AtomicBoolean registered = new AtomicBoolean(false);
-    
+
     private final String appName;
-    
+
     private final String contextPath;
-    
+
     private final String host;
-    
+
     private final String port;
-    
+
+
     /**
      * Instantiates a new context refreshed event listener.
      *
@@ -92,7 +95,31 @@ public abstract class AbstractContextRefreshedEventListener<T, A extends Annotat
         this.port = props.getProperty(ShenyuClientConstants.PORT);
         publisher.start(shenyuClientRegisterRepository);
     }
-    
+
+
+    /**
+     * Instantiates a new context refreshed event listener.
+     * @param registerCenterConfig the registerCenterConfig
+     * @param clientConfig the client config.
+     * @param shenyuClientRegisterRepository the shenyuClientRegisterRepository
+     */
+    public AbstractContextRefreshedEventListener(final ShenyuRegisterCenterConfig registerCenterConfig,
+                                           final PropertiesConfig clientConfig,
+                                           final ShenyuClientRegisterRepository shenyuClientRegisterRepository) {
+        Properties props = clientConfig.getProps();
+        String contextPath = props.getProperty(ShenyuClientConstants.CONTEXT_PATH);
+        if (StringUtils.isBlank(contextPath)) {
+            throw new ShenyuClientIllegalArgumentException("client must config the contextPath");
+        }
+        this.appName = props.getProperty(ShenyuClientConstants.APP_NAME);
+        this.contextPath = Optional.ofNullable(props.getProperty(ShenyuClientConstants.CONTEXT_PATH)).map(UriUtils::repairData).orElse("");
+        this.host = props.getProperty(ShenyuClientConstants.HOST);
+        this.port = props.getProperty(ShenyuClientConstants.PORT);
+        shenyuClientRegisterRepository.init(registerCenterConfig);
+        publisher.start(shenyuClientRegisterRepository);
+        ShenyuClientRegisterRepositoryFactory.newInstance(registerCenterConfig);
+    }
+
     @Override
     public void onApplicationEvent(@NonNull final ContextRefreshedEvent event) {
         if (!registered.compareAndSet(false, true)) {

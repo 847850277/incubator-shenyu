@@ -13,6 +13,7 @@
     <modules>
         <module>shenyu-examples-agent-dubbo-api</module>
         <module>shenyu-examples-agent-alibaba-dubbo-service</module>
+        <module>shenyu-examples-agent-apache-dubbo-sercice</module>
     </modules>
 
     <dependencyManagement>

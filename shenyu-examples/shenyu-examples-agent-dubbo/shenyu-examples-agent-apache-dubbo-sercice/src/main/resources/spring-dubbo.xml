@@ -24,17 +24,13 @@
        http://code.alibabatech.com/schema/dubbo
        https://code.alibabatech.com/schema/dubbo/dubbo.xsd">
 
-    <dubbo:application name="test-agent-alibaba-dubbo-service"/>
+    <dubbo:application name="test-agent-apache-dubbo-service"/>
 
-    <dubbo:registry address="${dubbo.zk}"/>
+    <dubbo:registry address="${dubbo.registry.address}"/>
 
     <dubbo:protocol name="dubbo" port="20888"/>
 
-    <dubbo:service timeout="10000" interface="org.apache.shenyu.examples.agent.dubbo.api.service.AgentDubboTestService" ref="agentDubboTestService"/>
+    <dubbo:service timeout="10000" interface="org.apache.shenyu.examples.agent.dubbo.api.service.AgentDubboTestService" ref="agentApacheDubboTestService"/>
 
-    <dubbo:service timeout="10000" interface="org.apache.shenyu.examples.agent.dubbo.api.service.AgentDubboMultiParamService" ref="agentDubboMultiParamService"/>
-
-    <dubbo:service timeout="10000" interface="org.apache.shenyu.examples.agent.dubbo.api.service.AgentDubboClassTestService" ref="agentDubboClassTestService"/>
-
-    <dubbo:service timeout="10000" interface="org.apache.shenyu.examples.agent.dubbo.api.service.AgentDubboClassMultiParamService" ref="agentDubboClassMultiParamService"/>
+    <dubbo:service timeout="10000" interface="org.apache.shenyu.examples.agent.dubbo.api.service.AgentDubboMultiParamService" ref="agentApacheDubboMultiParamService"/>
 </beans>
